@@ -73,6 +73,12 @@ group :development do
   gem 'rubocop-rails'
 end
 
+gem 'haml'
+gem 'activeadmin'
+
+gem 'has_scope'
+
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
