@@ -14,4 +14,6 @@ RSpec.describe Node, type: :model do
   it {should belong_to(:parent)}
   it {should have_one(:instance)}
   it {should have_many(:tags)}
+  it {should have_many(:user_nodes)}
+  it {should have_many(:users)}
 end

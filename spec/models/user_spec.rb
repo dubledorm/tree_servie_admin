@@ -12,4 +12,6 @@ RSpec.describe User, type: :model do
 
   # Relationships
   it {should belong_to(:tree)}
+  it {should have_many(:user_nodes)}
+  it {should have_many(:nodes)}
 end
