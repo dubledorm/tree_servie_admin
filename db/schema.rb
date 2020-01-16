@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_15_205846) do
+ActiveRecord::Schema.define(version: 2020_01_16_134548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,18 @@ ActiveRecord::Schema.define(version: 2020_01_15_205846) do
     t.index ["tree_id"], name: "index_nodes_on_tree_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.bigint "node_id", null: false
+    t.string "name", null: false
+    t.string "value_type", null: false
+    t.text "value_string"
+    t.integer "value_int"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tags_on_name"
+    t.index ["node_id"], name: "index_tags_on_node_id"
+  end
+
   create_table "trees", force: :cascade do |t|
     t.bigint "instance_id", null: false
     t.string "name", null: false
@@ -49,5 +61,6 @@ ActiveRecord::Schema.define(version: 2020_01_15_205846) do
 
   add_foreign_key "nodes", "nodes", column: "parent_id"
   add_foreign_key "nodes", "trees"
+  add_foreign_key "tags", "nodes"
   add_foreign_key "trees", "instances"
 end
