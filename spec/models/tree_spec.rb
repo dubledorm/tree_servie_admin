@@ -14,5 +14,6 @@ describe Tree do
     # Relationships
     it {should belong_to(:instance)}
     it {should have_many(:nodes)}
+    it {should have_many(:users)}
   end
 end
