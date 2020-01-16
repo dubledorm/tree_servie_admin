@@ -1,0 +1,34 @@
+ru:
+  activerecord:
+    models:
+      instance:
+        one: Инстанс
+        other: Инстансы
+      tree:
+        one: Дерево
+        other: Деревья
+      node:
+        one: Узел
+        other: Узлы
+    attributes:
+      instance:
+        name: Название
+        description: Описание
+        state: Состояние
+        created_at: Создан
+        updated_at: Изменён
+      tree:
+        name: Название
+        instance: Инстанс
+        description: Описание
+        created_at: Создан
+        updated_at: Изменён
+      node:
+        name: Название
+        parent: Предок
+        tree: Дерево
+        description: Описание
+        created_at: Создан
+        updated_at: Изменён
+
+
