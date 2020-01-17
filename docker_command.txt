@@ -1,7 +1,11 @@
-docker build . -t mcs_control
-docker tag mcs_control registry.infsphr.info/mcs_control:v2.0.4
-docker push registry.infsphr.info/mcs_control:v2.0.10
+docker build . -t tree_servie_admin
+docker tag tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.0
+docker push registry.infsphr.info/tree_servie_admin:v1.0.0
+
+sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle:jungle@172.16.50.102:5433/jungle' --env RAILS_ENV=production --name tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.0 &
+
+
 
 --env DATABASE_URL='postgres://azirumga@10.50.0.84/mcs_control_development'
 
-sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://10.50.0.84/mcs_control_development' --env REDIS_CLOUD_URL='redis://redis:6379' --env RAILS_ENV=development --env RETRANSLATOR_HOST='tcp_server' --env RETRANSLATOR_PORT=3008 --env RETRANSLATOR_PROGRAM='tcp_server' --name mcs_control registry.infsphr.info/mcs_control:v2.2.0
+sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle-postgres:5433/tree_servie_admin_production' --env RAILS_ENV=production --name tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.0

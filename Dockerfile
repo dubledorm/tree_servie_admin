@@ -31,7 +31,7 @@ ENV RAILS_ENV=production \
     RACK_ENV=production \
     RAILS_SERVE_STATIC_FILES=true
 
-RUN RAILS_ENV=production bundle exec ./bin/rake assets:precompile
+#RUN RAILS_ENV=production bundle exec ./bin/rake assets:precompile
 
 # Проброс порта 3000
 EXPOSE 3000
