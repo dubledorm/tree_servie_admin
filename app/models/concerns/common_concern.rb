@@ -5,6 +5,7 @@ module CommonConcern
   REGEXP_FOR_NAME = /\A[a-zA-Z][a-zA-Z\d\._]+\z/
 
   included do
-    validates :name, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z][a-zA-Z\d\._]+\z/}
+    validates :name, presence: true, format: { with: /\A[a-zA-Z][a-zA-Z\d\._]+\z/}
+    validates :name, uniqueness: true if self.class.name == 'Instance'
   end
 end

@@ -6,4 +6,8 @@ class Tree < ApplicationRecord
   has_many :users
 
   validates :instance, presence: true
+  validates :name, uniqueness: { scope: :instance }
+
+  scope :instance_id, ->(instance_id){ where(instance_id: instance_id) }
+  scope :name_of_tree, ->(name){ where(name: name) }
 end
