@@ -1,4 +1,4 @@
-class Api::BaseController < ApplicationController
+class Api::BaseController < ActionController::API
   include BaseConcern
 
   rescue_from Exception, :with => :render_500
