@@ -1,6 +1,8 @@
 class Api::NodesController < Api::BaseController
   has_scope :tree_id
   has_scope :parent_id
+  has_scope :node_type_value, as: :node_type
+  has_scope :node_subtype_value, as: :node_subtype
 
   def show
     find_resource

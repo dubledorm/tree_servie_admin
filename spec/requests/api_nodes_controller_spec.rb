@@ -36,9 +36,15 @@ RSpec.describe Api::NodesController, type: :request do
     context 'when records exist' do
       let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
       let!(:tree1) { FactoryGirl.create(:tree, instance: instance) }
-      let!(:node11) { FactoryGirl.create(:node, tree: tree) }
-      let!(:node21) { FactoryGirl.create(:node, tree: tree, parent: node11) }
-      let!(:node12) { FactoryGirl.create(:node, tree: tree1) }
+      let!(:node11) { FactoryGirl.create(:node, tree: tree,
+                                         node_type: 'first_nt',
+                                         node_subtype: 'first_nst1') }
+      let!(:node21) { FactoryGirl.create(:node, tree: tree, parent: node11,
+                                         node_type: 'first_nt',
+                                         node_subtype: 'first_nst2') }
+      let!(:node12) { FactoryGirl.create(:node, tree: tree1,
+                                         node_type: 'first_nt',
+                                         node_subtype: 'first_nst3') }
 
 
 
@@ -68,6 +74,30 @@ RSpec.describe Api::NodesController, type: :request do
         expect(JSON.parse(response.body).count).to eq(0)
         ap JSON.parse(response.body)
         expect(JSON.parse(response.body)).to eq([])
+      end
+
+
+      it 'if filter by node_type and tree' do
+        get(api_instance_tree_nodes_path(instance_id: instance, tree_id: tree, node_type: 'first_nt'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(2)
+        ap JSON.parse(response.body)
+      end
+
+      it 'if filter by node_type and tree1' do
+        get(api_instance_tree_nodes_path(instance_id: instance, tree_id: tree1, node_type: 'first_nt'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+        ap JSON.parse(response.body)
+      end
+
+      it 'if filter by node_type and tree and node_subtype' do
+        get(api_instance_tree_nodes_path(instance_id: instance, tree_id: tree, node_type: 'first_nt',
+                                         node_subtype: 'first_nst1'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+        ap JSON.parse(response.body)
+        expect(JSON.parse(response.body)[0]['id']).to eq(node11.id)
       end
     end
   end

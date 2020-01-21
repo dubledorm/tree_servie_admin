@@ -26,4 +26,6 @@ class Node < ApplicationRecord
 
   scope :tree_id, ->(tree_id){ where(tree_id: tree_id) }
   scope :parent_id, ->(parent_id){ where(parent_id: parent_id) }
+  scope :node_type_value, ->(node_type_value){ where(node_type: node_type_value) }
+  scope :node_subtype_value, ->(node_subtype_value){ where(node_subtype: node_subtype_value) }
 end
