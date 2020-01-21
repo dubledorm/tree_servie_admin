@@ -6,4 +6,5 @@ class Instance < ApplicationRecord
   has_many :trees, dependent: :destroy
   has_many :nodes, through: :trees
   validates :state, presence: true, inclusion: { in: INSTANCE_STATES }
+  validates :name, uniqueness: true
 end

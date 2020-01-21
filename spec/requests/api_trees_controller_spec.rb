@@ -24,7 +24,7 @@ RSpec.describe Api::TreesController, type: :request do
   end
 
 
-  context 'index' do
+  context 'index#' do
     let!(:instance) { FactoryGirl.create(:instance) }
 
     context 'when no records exist' do
@@ -35,7 +35,7 @@ RSpec.describe Api::TreesController, type: :request do
       end
     end
 
-    context 'when recordfs exist' do
+    context 'when records exist' do
       let!(:instance1) { FactoryGirl.create(:instance) }
       let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
       let!(:tree1) { FactoryGirl.create(:tree, instance: instance) }
@@ -51,6 +51,14 @@ RSpec.describe Api::TreesController, type: :request do
         get(api_instance_trees_path(instance_id: instance1))
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body).count).to eq(1)
+      end
+
+      it 'if filter by name' do
+        get(api_instance_trees_path(instance_id: instance, name: tree1.name))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+        ap JSON.parse(response.body)
+        expect(JSON.parse(response.body)[0]['id']).to eq(tree1.id)
       end
     end
   end

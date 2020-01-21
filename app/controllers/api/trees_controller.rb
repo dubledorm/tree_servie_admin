@@ -1,5 +1,5 @@
 class Api::TreesController < Api::BaseController
-  has_scope :name_of_tree
+  has_scope :name_of_tree, as: :name
   has_scope :instance_id
 
   def show
@@ -10,13 +10,13 @@ class Api::TreesController < Api::BaseController
   end
 
   def index
-    @resources = apply_scopes(Tree).all
-    render json: @resources
+    get_collection
+    render json: @collection
   end
 
   def create
     ActiveRecord::Base.transaction do
-      @resource = Tree.new(tree_params.merge(instance_id: params[:instance_id]))
+      @resource = Tree.new(tree_params.merge(instance_id: params.require(:instance_id)))
       @resource.save!
       user = User.new(name: 'admin',
                       tree_id: @resource.id,
@@ -31,4 +31,5 @@ class Api::TreesController < Api::BaseController
   def tree_params
     params.require(:tree).permit(:name, :description)
   end
+
 end
