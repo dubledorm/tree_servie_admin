@@ -3,7 +3,12 @@ module BaseConcern
 
   def find_resource
     resource_class = controller_name.classify
-    @resource = resource_class.constantize.find(params[:id])
+    if params[:id].match(CommonConcern::REGEXP_FOR_NAME)
+      @resource = apply_scopes(resource_class.constantize).all.by_name(params[:id]).first
+    else
+      @resource = apply_scopes(resource_class.constantize).all.where(id: params[:id]).first
+    end
+    raise ActiveRecord::RecordNotFound, "Could not find #{resource_class} with: #{params}" if @resource.nil?
   end
 
   def get_collection

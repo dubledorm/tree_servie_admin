@@ -1,4 +1,5 @@
 class Api::NodesController < Api::BaseController
+  has_scope :instance_id
   has_scope :tree_id
   has_scope :parent_id
   has_scope :node_type_value, as: :node_type
@@ -15,8 +16,8 @@ class Api::NodesController < Api::BaseController
   end
 
   def create
-      @resource = Node.new(node_params.merge(tree_id: params.require(:tree_id)))
-      @resource.save!
+    @resource = Node.new(node_params.merge(tree_id: params.require(:tree_id)))
+    @resource.save!
     render json: @resource, status: :created
   end
 

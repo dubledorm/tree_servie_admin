@@ -24,6 +24,7 @@ class Node < ApplicationRecord
   validates :tree, presence: true
   validates_with TheSameTree
 
+  scope :instance_id, ->(instance_id){ joins(:tree).where(trees: { instance_id: instance_id }) }
   scope :tree_id, ->(tree_id){ where(tree_id: tree_id) }
   scope :parent_id, ->(parent_id){ where(parent_id: parent_id) }
   scope :node_type_value, ->(node_type_value){ where(node_type: node_type_value) }

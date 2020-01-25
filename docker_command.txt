@@ -1,6 +1,6 @@
 docker build . -t tree_servie_admin
-docker tag tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.0
-docker push registry.infsphr.info/tree_servie_admin:v1.0.0
+docker tag tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.2
+docker push registry.infsphr.info/tree_servie_admin:v1.0.2
 
 sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle:jungle@172.16.50.102:5433/jungle' --env RAILS_ENV=production --name tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.1 &
 

@@ -1,11 +1,9 @@
 class Api::TreesController < Api::BaseController
-  has_scope :name_of_tree, as: :name
+  has_scope :by_name, as: :name
   has_scope :instance_id
 
   def show
     find_resource
-    raise ActiveRecord::RecordNotFound,
-          "Could not find instance with id = #{params[:instance_id]}" unless @resource.instance_id.to_s == params['instance_id']
     render json: @resource
   end
 

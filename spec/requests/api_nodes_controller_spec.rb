@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'support/shared/request_shared_examples'
+require 'support/shared/some_trees_with_nodes.rb'
 
 
 RSpec.describe Api::NodesController, type: :request do
@@ -16,6 +17,28 @@ RSpec.describe Api::NodesController, type: :request do
 
     it_should_behave_like 'get response 404' do
       subject { get(api_instance_tree_node_path(instance_id: tree.instance, tree_id: tree.id, id: node.id + 1)) }
+    end
+
+    context 'when we have two instances' do
+      include_context 'some trees with nodes'
+
+      it 'should find record' do
+        get(api_instance_tree_node_path(instance_id: instance2, tree_id: tree3, id: node3.id))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['id']).to eq(node3.id)
+      end
+
+      it_should_behave_like 'get response 404' do
+        subject { get(api_instance_tree_node_path(instance_id: instance1, tree_id: tree3, id: node3.id)) }
+      end
+
+      it_should_behave_like 'get response 404' do
+        subject { get(api_instance_tree_node_path(instance_id: instance2, tree_id: tree1, id: node3.id)) }
+      end
+
+      it_should_behave_like 'get response 404' do
+        subject { get(api_instance_tree_node_path(instance_id: instance2, tree_id: tree2, id: node1.id)) }
+      end
     end
   end
 
@@ -98,6 +121,25 @@ RSpec.describe Api::NodesController, type: :request do
         expect(JSON.parse(response.body).count).to eq(1)
         ap JSON.parse(response.body)
         expect(JSON.parse(response.body)[0]['id']).to eq(node11.id)
+      end
+    end
+
+
+    context 'when we have two instances' do
+      include_context 'some trees with nodes'
+      let!(:instance_new) { FactoryGirl.create(:instance) }
+
+      it 'if filter by tree' do
+        get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree2))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+        expect(JSON.parse(response.body)[0]['id']).to eq(node2.id)
+      end
+
+      it 'if filter by instance' do
+        get(api_instance_tree_nodes_path(instance_id: instance_new, tree_id: tree2))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(0)
       end
     end
   end

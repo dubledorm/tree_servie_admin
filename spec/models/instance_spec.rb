@@ -18,11 +18,19 @@ describe Instance do
     it { expect(FactoryGirl.build(:instance, name: "the_name1234")).to be_valid}
     it { expect(FactoryGirl.build(:instance, name: "the-name1234")).to be_invalid}
     it { expect(FactoryGirl.build(:instance, name: "2thename1234")).to be_invalid}
-    it { expect(FactoryGirl.build(:instance, name: "a2the.name.1234")).to be_valid}
+    it { expect(FactoryGirl.build(:instance, name: "a2the.name.12_34")).to be_valid}
     it { expect(FactoryGirl.build(:instance, name: "12343424123412")).to be_invalid}
 
     # Relationships
     it {should have_many(:trees)}
     it {should have_many(:nodes)}
+  end
+
+  describe 'scope' do
+    let!(:instance1) {FactoryGirl.create :instance}
+    let!(:instance2) {FactoryGirl.create :instance}
+
+    it { expect(Instance.by_name(instance2.name).count).to eq(1)}
+    it { expect(Instance.by_name(instance2.name).first).to eq(instance2)}
   end
 end

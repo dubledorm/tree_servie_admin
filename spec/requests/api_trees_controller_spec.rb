@@ -21,6 +21,47 @@ RSpec.describe Api::TreesController, type: :request do
     it_should_behave_like 'get response 404' do
       subject { get(api_instance_tree_path(instance_id: bad_instance, id: tree.id)) }
     end
+
+    it 'should find by name' do
+      get(api_instance_tree_path(instance_id: tree.instance, id: tree.name))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['id']).to eq(tree.id)
+    end
+
+    it_should_behave_like 'get response 404' do
+      subject { get(api_instance_tree_path(instance_id: tree.instance, id: tree.name + '123')) }
+    end
+
+
+    context 'when we have two instances' do
+      let!(:instance1) { FactoryGirl.create(:instance) }
+      let!(:instance2) { FactoryGirl.create(:instance) }
+      let!(:tree1) { FactoryGirl.create(:tree, instance: instance1, name: 'objects') }
+      let!(:tree2) { FactoryGirl.create(:tree,  instance: instance1, name: 'topology1') }
+      let!(:tree3) { FactoryGirl.create(:tree, instance: instance2, name: 'objects') }
+
+      it 'should find by name 1' do
+        get(api_instance_tree_path(instance_id: instance1, id: 'objects'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['id']).to eq(tree1.id)
+      end
+
+      it 'should find by name 1' do
+        get(api_instance_tree_path(instance_id: instance1, id: 'topology1'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['id']).to eq(tree2.id)
+      end
+
+      it 'should find by name 3' do
+        get(api_instance_tree_path(instance_id: instance2, id: 'objects'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['id']).to eq(tree3.id)
+      end
+
+      it_should_behave_like 'get response 404' do
+        subject { get(api_instance_tree_path(instance_id: instance2, id: 'topology1')) }
+      end
+    end
   end
 
 
