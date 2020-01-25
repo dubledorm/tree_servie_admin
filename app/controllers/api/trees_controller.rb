@@ -16,6 +16,12 @@ class Api::TreesController < Api::BaseController
     end
   end
 
+  def update
+    super do
+      @resource.update!(tree_params.merge(instance_id: params.require(:instance_id)))
+    end
+  end
+
   private
 
   def tree_params

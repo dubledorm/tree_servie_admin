@@ -42,4 +42,14 @@ class Api::BaseController < ActionController::API
     end
     render json: @resource, status: :created
   end
+
+  def update
+    find_resource
+    begin
+      yield
+    rescue ActiveRecord::RecordInvalid => e
+      raise ActionController::BadRequest, @resource.errors.full_messages
+    end
+    render json: @resource, status: 200
+  end
 end

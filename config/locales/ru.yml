@@ -45,12 +45,12 @@ ru:
           attributes:
             name:
               blank: должно быть заполнено
-              taken: имя уже используется
+              taken: уже используется
         tree:
           attributes:
             name:
               blank: должно быть заполнено
-              taken: имя уже используется
+              taken: уже используется
         tag:
           attributes:
             name:

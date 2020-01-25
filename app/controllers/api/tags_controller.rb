@@ -11,6 +11,12 @@ class Api::TagsController < Api::BaseController
     end
   end
 
+  def update
+    super do
+      @resource.update!(tag_params.merge(node_id: params.require(:node_id)))
+    end
+  end
+
   private
 
   def tag_params

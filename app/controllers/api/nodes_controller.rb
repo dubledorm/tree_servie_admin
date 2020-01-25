@@ -12,6 +12,12 @@ class Api::NodesController < Api::BaseController
     end
   end
 
+  def update
+    super do
+      @resource.update!(node_params.merge(tree_id: params.require(:tree_id)))
+    end
+  end
+
   def children
     find_resource
     render json: @resource.children

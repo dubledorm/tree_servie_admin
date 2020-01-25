@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace 'api' do
     resources :instances, only: :show do
-      resources :trees, only: [:show, :index, :create] do
+      resources :trees, only: [:show, :index, :create, :update] do
         resources :nodes do
           resources :tags
           member do

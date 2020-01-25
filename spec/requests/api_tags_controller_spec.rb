@@ -4,7 +4,7 @@ require 'support/shared/request_shared_examples'
 
 RSpec.describe Api::TagsController, type: :request do
 
-  context 'show' do
+  describe 'show' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
     let!(:node) { FactoryGirl.create(:node, tree: tree) }
@@ -84,7 +84,7 @@ RSpec.describe Api::TagsController, type: :request do
   end
 
 
-  context 'index#' do
+  describe 'index#' do
     let!(:node) { FactoryGirl.create(:node) }
 
     context 'when no records exist' do
@@ -124,7 +124,7 @@ RSpec.describe Api::TagsController, type: :request do
     end
   end
 
-  context 'create' do
+  describe 'create' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let!(:tree) { FactoryGirl.create(:tree, instance_id: instance.id) }
     let!(:node) { FactoryGirl.create(:node, name: 'TestNode', tree_id: tree.id) }
@@ -169,6 +169,32 @@ RSpec.describe Api::TagsController, type: :request do
         subject { post(api_instance_tree_node_tags_path( instance_id: instance, tree_id: tree.id, node_id: node.id),
                        params: { tag: { name: 'test_12312' } } ) }
       end
+    end
+  end
+
+  describe 'update#' do
+    let!(:node) { FactoryGirl.create(:node) }
+    let!(:tag) { FactoryGirl.create(:tag, node_id: node.id, name: 'test_12312') }
+    let!(:tag1) { FactoryGirl.create(:tag, node_id: tag.node.id, name: 'the_name') }
+
+    it 'should update record' do
+      put(api_instance_tree_node_tag_path( instance_id: tag.instance, tree_id: tag.tree.id,
+                                            node_id: tag.node.id, id: tag.id),
+          params: { tag: { name: 'new_test_name' } } )
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['name']).to eq('new_test_name')
+      tag.reload
+      expect(tag.name).to eq('new_test_name')
+    end
+
+    it 'should not double name' do
+      put(api_instance_tree_node_tag_path( instance_id: tag.instance, tree_id: tag.tree.id,
+                                            node_id: tag.node.id, id: tag.id),
+          params: { tag: { name: 'the_name' } } )
+      expect(response).to have_http_status(400)
+      ap JSON.parse(response.body)
+      tag.reload
+      expect(tag.name).to eq('test_12312')
     end
   end
 end

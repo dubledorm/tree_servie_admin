@@ -1,11 +1,12 @@
 require 'rails_helper'
 require 'support/shared/request_shared_examples'
 require 'support/shared/some_trees_with_nodes.rb'
+require 'support/shared/many_nodes_with_parents.rb'
 
 
 RSpec.describe Api::NodesController, type: :request do
 
-  context 'show' do
+  describe 'show#' do
     let!(:tree) { FactoryGirl.create(:tree) }
     let!(:node) { FactoryGirl.create(:node, tree: tree) }
 
@@ -43,7 +44,7 @@ RSpec.describe Api::NodesController, type: :request do
   end
 
 
-  context 'index' do
+  describe 'index#' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
 
@@ -144,7 +145,7 @@ RSpec.describe Api::NodesController, type: :request do
     end
   end
 
-  context 'create' do
+  describe 'create#' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
     let(:node) { FactoryGirl.build(:node, name: 'TestNode') }
@@ -200,6 +201,36 @@ RSpec.describe Api::NodesController, type: :request do
                      params: { node: { name: 'Name of node',
                                        parent_id: node11.id} } ) }.to change(Node, :count).by(1)
       end
+    end
+  end
+
+  describe 'update#' do
+    include_context 'many nodes with parents'
+
+    it 'should update record' do
+      put(api_instance_tree_node_path( instance_id: node11.instance.id, tree_id: node11.tree.id, id: node11.id ),
+           params: { node: { name: 'New name of node'} } )
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['name']).to eq('New name of node')
+      node11.reload
+      expect(node11.name).to eq('New name of node')
+    end
+
+    it 'should change parent node' do
+      put(api_instance_tree_node_path( instance_id: node11.instance.id, tree_id: node11.tree.id, id: node11.id ),
+          params: { node: { parent_id: node121.id} } )
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['parent_id']).to eq(node121.id)
+      node11.reload
+      expect(node11.parent_id).to eq(node121.id)
+    end
+
+    it 'should not to change tree' do
+      put(api_instance_tree_node_path( instance_id: node11.instance.id, tree_id: node11.tree.id, id: node11.id ),
+          params: { node: { parent_id: node2.id} } )
+      expect(response).to have_http_status(400)
+      node11.reload
+      expect(node11.parent_id).to eq(node1.id)
     end
   end
 end

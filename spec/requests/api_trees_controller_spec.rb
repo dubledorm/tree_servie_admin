@@ -4,7 +4,7 @@ require 'support/shared/request_shared_examples'
 
 RSpec.describe Api::TreesController, type: :request do
 
-  context 'show' do
+  describe 'show#' do
     let!(:tree) { FactoryGirl.create(:tree) }
     let!(:bad_instance) { FactoryGirl.create(:instance) }
 
@@ -65,7 +65,7 @@ RSpec.describe Api::TreesController, type: :request do
   end
 
 
-  context 'index#' do
+  describe 'index#' do
     let!(:instance) { FactoryGirl.create(:instance) }
 
     context 'when no records exist' do
@@ -104,7 +104,7 @@ RSpec.describe Api::TreesController, type: :request do
     end
   end
 
-  context 'create' do
+  describe 'create#' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let(:tree) { FactoryGirl.build(:tree, name: 'TestTree', instance_id: instance) }
 
@@ -144,6 +144,29 @@ RSpec.describe Api::TreesController, type: :request do
       it_should_behave_like 'get response 400' do
         subject { post(api_instance_trees_path( instance_id: instance ), params: { tree: { name: 'test_12312' } } ) }
       end
+    end
+  end
+
+  describe 'update#' do
+    let!(:tree) { FactoryGirl.create(:tree, name: 'test_12312') }
+    let!(:tree1) { FactoryGirl.create(:tree, instance_id: tree.instance_id, name: 'the_name') }
+
+    it 'should update record' do
+      put(api_instance_tree_path( instance_id: tree.instance_id, id: tree.id ),
+          params: { tree: { name: 'new_test_name' } } )
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['name']).to eq('new_test_name')
+      tree.reload
+      expect(tree.name).to eq('new_test_name')
+    end
+
+    it 'should not double name' do
+      put(api_instance_tree_path( instance_id: tree.instance_id, id: tree.id ),
+          params: { tree: { name: 'the_name' } } )
+      expect(response).to have_http_status(400)
+      ap JSON.parse(response.body)
+      tree.reload
+      expect(tree.name).to eq('test_12312')
     end
   end
 end
