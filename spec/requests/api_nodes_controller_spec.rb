@@ -189,7 +189,7 @@ RSpec.describe Api::NodesController, type: :request do
       let!(:node12) { FactoryGirl.create(:node, tree: tree1) }
 
 
-      it_should_behave_like 'get response 500' do
+      it_should_behave_like 'get response 400' do
         subject { post(api_instance_tree_nodes_path( instance_id: instance, tree_id: tree ),
                        params: { node: { name: 'Name of node',
                                          parent_id: node12.id} } ) }

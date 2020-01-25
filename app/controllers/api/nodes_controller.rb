@@ -5,20 +5,11 @@ class Api::NodesController < Api::BaseController
   has_scope :node_type_value, as: :node_type
   has_scope :node_subtype_value, as: :node_subtype
 
-  def show
-    find_resource
-    render json: @resource
-  end
-
-  def index
-    get_collection
-    render json: @collection
-  end
-
   def create
-    @resource = Node.new(node_params.merge(tree_id: params.require(:tree_id)))
-    @resource.save!
-    render json: @resource, status: :created
+    super do
+      @resource = Node.new(node_params.merge(tree_id: params.require(:tree_id)))
+      @resource.save!
+    end
   end
 
   def children

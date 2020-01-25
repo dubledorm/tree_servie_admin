@@ -141,7 +141,7 @@ RSpec.describe Api::TreesController, type: :request do
     context 'when double for name of tree' do
       let!(:another_tree) { FactoryGirl.create(:tree, instance: instance, name: 'test_12312') }
 
-      it_should_behave_like 'get response 500' do
+      it_should_behave_like 'get response 400' do
         subject { post(api_instance_trees_path( instance_id: instance ), params: { tree: { name: 'test_12312' } } ) }
       end
     end
