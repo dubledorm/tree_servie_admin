@@ -23,7 +23,7 @@ class Api::NodesController < Api::BaseController
 
   def children
     find_resource
-    render json: @resource.childrens
+    render json: @resource.children
   end
 
   private

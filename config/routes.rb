@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :instances, only: :show do
       resources :trees, only: [:show, :index, :create] do
         resources :nodes do
+          resources :tags
           member do
             get :children
           end

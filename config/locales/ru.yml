@@ -39,5 +39,24 @@ ru:
         description: Описание
         created_at: Создан
         updated_at: Изменён
-
+    errors:
+      models:
+        instance:
+          attributes:
+            name:
+              blank: должно быть заполнено
+              taken: имя уже используется
+        tree:
+          attributes:
+            name:
+              blank: должно быть заполнено
+              taken: имя уже используется
+        tag:
+          attributes:
+            name:
+              blank: должно быть заполнено
+              taken: имя тэга уже используется
+            value_type:
+              blank: должно быть заполнено
+              inclusion: 'может принимать значения: int, string'
 

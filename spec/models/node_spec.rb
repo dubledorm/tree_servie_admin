@@ -18,7 +18,7 @@ RSpec.describe Node, type: :model do
     it { should have_many(:tags) }
     it { should have_many(:user_nodes) }
     it { should have_many(:users) }
-    it { should have_many(:childrens) }
+    it { should have_many(:children) }
   end
 
   describe 'validations' do
@@ -40,8 +40,8 @@ RSpec.describe Node, type: :model do
   describe 'children' do
     include_context 'many nodes with parents'
 
-    it { expect(node1.childrens.count).to eq(3) }
-    it { expect(node12.childrens.count).to eq(1) }
-    it { expect(node3.childrens.count).to eq(0) }
+    it { expect(node1.children.count).to eq(3) }
+    it { expect(node12.children.count).to eq(1) }
+    it { expect(node3.children.count).to eq(0) }
   end
 end
