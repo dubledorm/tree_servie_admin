@@ -20,6 +20,7 @@ class Node < ApplicationRecord
   has_many :user_nodes
   has_many :users, through: :user_nodes
   belongs_to :parent, class_name: 'Node', optional: true
+  has_many :childrens, class_name: 'Node', foreign_key: 'parent_id'
 
   validates :tree, presence: true
   validates_with TheSameTree

@@ -21,6 +21,11 @@ class Api::NodesController < Api::BaseController
     render json: @resource, status: :created
   end
 
+  def children
+    find_resource
+    render json: @resource.childrens
+  end
+
   private
 
   def node_params

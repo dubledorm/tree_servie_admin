@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/shared/many_nodes_with_parents'
 
 RSpec.describe Node, type: :model do
   describe 'factory' do
@@ -11,12 +12,13 @@ RSpec.describe Node, type: :model do
     it { should validate_presence_of(:tree) }
 
     # Relationships
-    it {should belong_to(:tree)}
-    it {should belong_to(:parent)}
-    it {should have_one(:instance)}
-    it {should have_many(:tags)}
-    it {should have_many(:user_nodes)}
-    it {should have_many(:users)}
+    it { should belong_to(:tree) }
+    it { should belong_to(:parent) }
+    it { should have_one(:instance) }
+    it { should have_many(:tags) }
+    it { should have_many(:user_nodes) }
+    it { should have_many(:users) }
+    it { should have_many(:childrens) }
   end
 
   describe 'validations' do
@@ -33,5 +35,13 @@ RSpec.describe Node, type: :model do
       it { expect(node1).to be_valid }
       it { expect(node2).to be_invalid }
     end
+  end
+
+  describe 'children' do
+    include_context 'many nodes with parents'
+
+    it { expect(node1.childrens.count).to eq(3) }
+    it { expect(node12.childrens.count).to eq(1) }
+    it { expect(node3.childrens.count).to eq(0) }
   end
 end
