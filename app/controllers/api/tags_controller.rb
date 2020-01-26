@@ -20,6 +20,6 @@ class Api::TagsController < Api::BaseController
   private
 
   def tag_params
-    params.require(:tag).permit(:name, :value_type, :value_string, :value_it)
+    params.require(:tag).permit(:name, :value_type, :value_string, :value_int)
   end
 end

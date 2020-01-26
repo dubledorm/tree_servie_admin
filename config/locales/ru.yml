@@ -41,21 +41,30 @@ ru:
         updated_at: Изменён
     errors:
       models:
+        user:
+          attributes:
+            name:
+              blank: должно быть заполнено
+              taken: уже используется
+              invalid: неверный формат
         instance:
           attributes:
             name:
               blank: должно быть заполнено
               taken: уже используется
+              invalid: неверный формат
         tree:
           attributes:
             name:
               blank: должно быть заполнено
               taken: уже используется
+              invalid: неверный формат
         tag:
           attributes:
             name:
               blank: должно быть заполнено
               taken: имя тэга уже используется
+              invalid: неверный формат
             value_type:
               blank: должно быть заполнено
               inclusion: 'может принимать значения: int, string'

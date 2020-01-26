@@ -26,6 +26,6 @@ class Api::NodesController < Api::BaseController
   private
 
   def node_params
-    params.require(:node).permit(:name, :description, :node_type, :node_subtype, :parent_id, :tree_id)
+    params.require(:node).permit(:name, :description, :node_type, :node_subtype, :parent_id)
   end
 end
