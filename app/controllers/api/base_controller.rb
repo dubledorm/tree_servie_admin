@@ -52,4 +52,12 @@ class Api::BaseController < ActionController::API
     end
     render json: @resource, status: 200
   end
+
+  def destroy
+    find_resource
+    ActiveRecord::Base.transaction do
+      @resource.destroy!
+    end
+    render json: {}, nothing: true, status: 200
+  end
 end

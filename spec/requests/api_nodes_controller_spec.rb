@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'support/shared/request_shared_examples'
 require 'support/shared/some_trees_with_nodes.rb'
 require 'support/shared/many_nodes_with_parents.rb'
+require 'support/shared/full_data_example.rb'
 
 
 RSpec.describe Api::NodesController, type: :request do
@@ -231,6 +232,62 @@ RSpec.describe Api::NodesController, type: :request do
       expect(response).to have_http_status(400)
       node11.reload
       expect(node11.parent_id).to eq(node1.id)
+    end
+  end
+
+
+  describe 'delete#' do
+    let!(:node) { FactoryGirl.create(:node) }
+
+    it 'should decrease records count' do
+      expect{ delete(api_instance_tree_node_path( instance_id: node.instance.id,
+                                                  tree_id: node.tree.id,
+                                                  id: node.id )) }.to change(Node, :count).by(-1)
+    end
+
+    it 'should return status 200' do
+      delete(api_instance_tree_node_path( instance_id: node.instance.id,
+                                          tree_id: node.tree.id,
+                                          id: node.id ))
+      expect(response).to have_http_status(200)
+    end
+
+
+    context 'when exist some tags' do
+      let!(:tag1) { FactoryGirl.create(:tag, node: node) }
+      let!(:tag2) { FactoryGirl.create(:tag, node: node) }
+
+      it { expect(node.tags.count).to eq(2) }
+
+      it 'should decrease records count' do
+        expect{ delete(api_instance_tree_node_path( instance_id: node.instance.id,
+                                                    tree_id: node.tree.id,
+                                                    id: node.id )) }.to change(Node, :count).by(-1)
+      end
+
+      it 'should decrease tag records count' do
+        expect{ delete(api_instance_tree_node_path( instance_id: node.instance.id,
+                                                    tree_id: node.tree.id,
+                                                    id: node.id )) }.to change(Tag, :count).by(-2)
+      end
+    end
+
+    context 'when exist children' do
+      include_context 'full data example'
+
+      it { expect(node1.children.count).to eq(3) }
+
+      it 'should decrease records count' do
+        expect{ delete(api_instance_tree_node_path( instance_id: node1.instance.id,
+                                                    tree_id: node1.tree.id,
+                                                    id: node1.id )) }.to change(Node, :count).by(-5)
+      end
+
+      it 'should decrease tag records count' do
+        expect{ delete(api_instance_tree_node_path( instance_id: node1.instance.id,
+                                                    tree_id: node1.tree.id,
+                                                    id: node1.id )) }.to change(Tag, :count).by(-4)
+      end
     end
   end
 end

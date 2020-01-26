@@ -197,4 +197,23 @@ RSpec.describe Api::TagsController, type: :request do
       expect(tag.name).to eq('test_12312')
     end
   end
+
+  describe 'delete#' do
+    let!(:tag) { FactoryGirl.create(:tag) }
+
+    it 'should decrease record counts' do
+      expect{ delete(api_instance_tree_node_tag_path( instance_id: tag.instance.id,
+                                                      tree_id: tag.tree.id,
+                                                      node_id: tag.node.id,
+                                                      id: tag.id) ) }.to change(Tag, :count).by(-1)
+    end
+
+    it 'should return status 200' do
+      delete(api_instance_tree_node_tag_path( instance_id: tag.instance.id,
+                                              tree_id: tag.tree.id,
+                                              node_id: tag.node.id,
+                                              id: tag.id) )
+      expect(response).to have_http_status(200)
+    end
+  end
 end
