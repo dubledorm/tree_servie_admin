@@ -21,7 +21,18 @@ class Api::NodesController < Api::BaseController
 
   def children
     find_resource
-    render json: @resource.children
+    render json: @resource.children, status: 200
+  end
+
+  def root
+    root_node = get_collection.roots.first
+    render json: root_node, status: 200
+  end
+
+  def path_to_root
+    find_resource
+    result = Node::PathToRootService.new(@resource).call
+    render json: result, status: 200
   end
 
   private

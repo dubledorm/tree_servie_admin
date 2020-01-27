@@ -9,6 +9,11 @@ Rails.application.routes.draw do
           resources :tags
           member do
             get :children
+            get :path_to_root
+          end
+
+          collection do
+            get :root
           end
         end
       end

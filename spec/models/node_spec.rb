@@ -44,4 +44,16 @@ RSpec.describe Node, type: :model do
     it { expect(node12.children.count).to eq(1) }
     it { expect(node3.children.count).to eq(0) }
   end
+
+  describe 'roots' do
+    let!(:tree1) { FactoryGirl.create :tree }
+    let!(:tree2) { FactoryGirl.create :tree }
+    let!(:node11) { FactoryGirl.create :node, tree: tree1 }
+    let!(:node12) { FactoryGirl.create :node, tree: tree2 }
+
+    let(:node1) { FactoryGirl.build(:node, tree: tree1, parent: node11) }
+    let(:node2) { FactoryGirl.build(:node, tree: tree1, parent: node12) }
+
+    it { expect(Node.roots.count).to eq(2) }
+  end
 end

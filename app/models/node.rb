@@ -31,4 +31,6 @@ class Node < ApplicationRecord
   scope :node_type_value, ->(node_type_value){ where(node_type: node_type_value) }
   scope :node_subtype_value, ->(node_subtype_value){ where(node_subtype: node_subtype_value) }
   scope :user_id, ->(user_id){ joins(:user_nodes).where(user_nodes: { user_id: user_id }) }
+
+  scope :roots, ->{ where(parent_id: nil) }
 end
