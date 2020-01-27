@@ -1,4 +1,5 @@
 class Api::NodesController < Api::BaseController
+  has_scope :user_id
   has_scope :instance_id
   has_scope :tree_id
   has_scope :parent_id

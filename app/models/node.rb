@@ -17,7 +17,7 @@ class Node < ApplicationRecord
   belongs_to :tree
   has_one :instance, through: :tree
   has_many :tags, dependent: :destroy
-  has_many :user_nodes
+  has_many :user_nodes, dependent: :destroy
   has_many :users, through: :user_nodes
   belongs_to :parent, class_name: 'Node', optional: true
   has_many :children, class_name: 'Node', foreign_key: 'parent_id', dependent: :destroy
@@ -30,4 +30,5 @@ class Node < ApplicationRecord
   scope :parent_id, ->(parent_id){ where(parent_id: parent_id) }
   scope :node_type_value, ->(node_type_value){ where(node_type: node_type_value) }
   scope :node_subtype_value, ->(node_subtype_value){ where(node_subtype: node_subtype_value) }
+  scope :user_id, ->(user_id){ joins(:user_nodes).where(user_nodes: { user_id: user_id }) }
 end

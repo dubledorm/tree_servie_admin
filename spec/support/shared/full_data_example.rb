@@ -23,4 +23,13 @@ RSpec.shared_context 'full data example' do
   let!(:tag11_2) { FactoryGirl.create(:tag, node: node11) }
 
   let!(:tag3_1) { FactoryGirl.create(:tag, node: node3) }
+
+  let!(:user_admin) { FactoryGirl.create(:user, name: 'admin', tree: tree1) }
+  let!(:user_mc_1) { FactoryGirl.create(:user, name: 'mc_read', ability: 'read', tree: tree1) }
+  let!(:user_mc_2) { FactoryGirl.create(:user, name: 'mc_tag', ability: 'write_tag', tree: tree1) }
+
+  let!(:mc1_node11) { FactoryGirl.create(:user_node, user: user_mc_1, node: node11) }
+  let!(:mc1_node12) { FactoryGirl.create(:user_node, user: user_mc_1, node: node12) }
+  let!(:mc2_node11) { FactoryGirl.create(:user_node, user: user_mc_2, node: node11) }
+  let!(:mc2_node121) { FactoryGirl.create(:user_node, user: user_mc_2, node: node121) }
 end
