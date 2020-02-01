@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           member do
             get :children
             get :path_to_root
+            get :all_children
           end
 
           collection do

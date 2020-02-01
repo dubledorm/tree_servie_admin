@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_16_155517) do
+ActiveRecord::Schema.define(version: 2020_02_01_204208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,9 @@ ActiveRecord::Schema.define(version: 2020_01_16_155517) do
     t.string "node_subtype"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state", null: false
     t.index ["parent_id"], name: "index_nodes_on_parent_id"
+    t.index ["state"], name: "index_nodes_on_state"
     t.index ["tree_id"], name: "index_nodes_on_tree_id"
   end
 

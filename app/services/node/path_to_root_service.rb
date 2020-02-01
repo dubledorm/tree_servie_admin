@@ -8,7 +8,7 @@ class Node
       result = []
       current_node = @node
       until current_node.parent.nil? do
-        result << current_node.parent
+        result << current_node.parent_id
         current_node = current_node.parent
       end
       result

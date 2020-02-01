@@ -13,6 +13,8 @@ class TheSameTree < ActiveModel::Validator
   end
 end
 
+NODE_STATES = %w(active deleted).freeze
+
 class Node < ApplicationRecord
   belongs_to :tree
   has_one :instance, through: :tree
@@ -23,6 +25,7 @@ class Node < ApplicationRecord
   has_many :children, class_name: 'Node', foreign_key: 'parent_id', dependent: :destroy
 
   validates :tree, presence: true
+  validates :state, presence: true, inclusion: { in: NODE_STATES }
   validates_with TheSameTree
 
   scope :instance_id, ->(instance_id){ joins(:tree).where(trees: { instance_id: instance_id }) }
@@ -33,4 +36,5 @@ class Node < ApplicationRecord
   scope :user_id, ->(user_id){ joins(:user_nodes).where(user_nodes: { user_id: user_id }) }
 
   scope :roots, ->{ where(parent_id: nil) }
+  scope :by_ids, ->(ids){ where(id: ids) }
 end

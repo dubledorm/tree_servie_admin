@@ -10,6 +10,7 @@ RSpec.describe Node, type: :model do
 
     # Validations
     it { should validate_presence_of(:tree) }
+    it { should validate_presence_of(:state) }
 
     # Relationships
     it { should belong_to(:tree) }
@@ -34,6 +35,15 @@ RSpec.describe Node, type: :model do
 
       it { expect(node1).to be_valid }
       it { expect(node2).to be_invalid }
+    end
+
+    context 'when state is right' do
+      it { expect(FactoryGirl.build(:node, state: 'active')).to be_valid}
+      it { expect(FactoryGirl.build(:node, state: 'deleted')).to be_valid}
+    end
+
+    context 'when state is wrong' do
+      it { expect(FactoryGirl.build(:node, state: 'abrakadabra')).to be_invalid}
     end
   end
 

@@ -159,7 +159,7 @@ RSpec.describe Api::NodesController, type: :request do
 
       it 'should get only part of record' do
         expect{ post(api_instance_tree_nodes_path( instance_id: instance, tree_id: tree ),
-                     params: { node: { name: 'Name of node'} } ) }.to change(Node, :count).by(1)
+                     params: { node: { name: 'Name of node' } } ) }.to change(Node, :count).by(1)
       end
 
       it 'should return 201' do
@@ -172,6 +172,15 @@ RSpec.describe Api::NodesController, type: :request do
         expect(JSON.parse(response.body)['name']).to eq('TestNode')
       end
 
+    end
+
+    context 'when parameter state presents and his value is deleted' do
+      it 'should return object tree' do
+        post(api_instance_tree_nodes_path( instance_id: instance, tree_id: tree ),
+             params: { node: { name: 'Name of node',
+                               state: 'deleted' } } )
+        expect(JSON.parse(response.body)['state']).to eq('deleted')
+      end
     end
 
     context 'when parameters are bad' do
