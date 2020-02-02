@@ -66,4 +66,35 @@ RSpec.describe Node, type: :model do
 
     it { expect(Node.roots.count).to eq(2) }
   end
+
+  describe 'scopes' do
+    let!(:node11) { FactoryGirl.create :node, name: 'the node 11' }
+    let!(:node12) { FactoryGirl.create :node, name: 'the node 12' }
+    let!(:node13) { FactoryGirl.create :node, name: 'это тринадцатый нод' }
+    let!(:node14) { FactoryGirl.create :node, name: 'это четырнадцатый нод' }
+    let!(:node15) { FactoryGirl.create :node, name: 'нод' }
+
+    context 'when by_name scope presents' do
+      it { expect(Node.by_name('the node 12').count).to eq(1) }
+      it { expect(Node.by_name('the node 12').first).to eq(node12) }
+
+      it { expect(Node.by_name('это четырнадцатый нод').count).to eq(1) }
+      it { expect(Node.by_name('это четырнадцатый нод').first).to eq(node14) }
+    end
+
+    context 'when like_name scope presents' do
+      it { expect(Node.like_name('the node 12').count).to eq(1) }
+      it { expect(Node.like_name('the node 12').first).to eq(node12) }
+
+      it { expect(Node.like_name('12').count).to eq(1) }
+      it { expect(Node.like_name('12').first).to eq(node12) }
+
+
+      it { expect(Node.like_name('это четырнадцатый нод').count).to eq(1) }
+      it { expect(Node.like_name('это четырнадцатый нод').first).to eq(node14) }
+
+      it { expect(Node.like_name('нод').count).to eq(3) }
+      it { expect(Node.like_name('четырнадцатый').first).to eq(node14) }
+    end
+  end
 end

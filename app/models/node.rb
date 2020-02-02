@@ -34,6 +34,10 @@ class Node < ApplicationRecord
   scope :node_type_value, ->(node_type_value){ where(node_type: node_type_value) }
   scope :node_subtype_value, ->(node_subtype_value){ where(node_subtype: node_subtype_value) }
   scope :user_id, ->(user_id){ joins(:user_nodes).where(user_nodes: { user_id: user_id }) }
+  scope :by_name, ->(name){ where(name: name) }
+  scope :like_name, ->(name){ where('nodes.name LIKE ?', "%#{name}%") }
+  scope :by_state, ->(state){ where(state: state)}
+
 
   scope :roots, ->{ where(parent_id: nil) }
   scope :by_ids, ->(ids){ where(id: ids) }

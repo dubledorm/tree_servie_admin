@@ -5,6 +5,9 @@ class Api::NodesController < Api::BaseController
   has_scope :parent_id
   has_scope :node_type_value, as: :node_type
   has_scope :node_subtype_value, as: :node_subtype
+  has_scope :by_name, as: :name
+  has_scope :like_name
+  has_scope :by_state, as: :state
 
   def create
     super do
@@ -20,11 +23,6 @@ class Api::NodesController < Api::BaseController
     end
   end
 
-  def children
-    find_resource
-    render json: @resource.children, status: 200
-  end
-
   def root
     root_node = get_collection.roots.first
     # TODO здесь root_node может быть пустым. Например если пользователю не разрешена работа с этим узлом
@@ -32,16 +30,25 @@ class Api::NodesController < Api::BaseController
   end
 
   def path_to_root
-    find_resource
+    find_resource_by_params_mask(['controller', 'action', 'instance_id', 'tree_id', 'id'])
     result_ids = Node::PathToRootService.new(@resource).call
+    params.delete('id')
     unsorted_result = apply_scopes(Node).by_ids(result_ids)
     result = Node::SortRootPathService.new(result_ids, unsorted_result).call
     render json: result, status: 200
   end
 
+  def children
+    find_resource_by_params_mask(['controller', 'action', 'instance_id', 'tree_id', 'id'])
+    params.delete('id')
+    render json: apply_scopes(@resource.children), status: 200
+  end
+
   def all_children
-    find_resource
+    find_resource_by_params_mask(['controller', 'action', 'instance_id', 'tree_id', 'id'])
     result_ids = Node::AllChildrenService.new(@resource).call
+
+    params.delete('id')
     result = apply_scopes(Node).by_ids(result_ids)
     render json: result, status: 200
   end
