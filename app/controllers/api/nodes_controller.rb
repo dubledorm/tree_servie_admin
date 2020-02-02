@@ -1,4 +1,6 @@
 class Api::NodesController < Api::BaseController
+  include NodeConcern
+
   has_scope :user_id
   has_scope :instance_id
   has_scope :tree_id
@@ -39,18 +41,28 @@ class Api::NodesController < Api::BaseController
   end
 
   def children
-    find_resource_by_params_mask(['controller', 'action', 'instance_id', 'tree_id', 'id'])
-    params.delete('id')
-    render json: apply_scopes(@resource.children), status: 200
+    get_children
+    render json: @collection, status: 200
   end
 
   def all_children
-    find_resource_by_params_mask(['controller', 'action', 'instance_id', 'tree_id', 'id'])
-    result_ids = Node::AllChildrenService.new(@resource).call
+    get_all_children
+    render json: @collection, status: 200
+  end
 
-    params.delete('id')
-    result = apply_scopes(Node).by_ids(result_ids)
-    render json: result, status: 200
+  def count
+    get_collection
+    render json: @collection.count
+  end
+
+  def count_children
+    get_children
+    render json: @collection.count
+  end
+
+  def count_all_children
+    get_all_children
+    render json: @collection.count
   end
 
   private

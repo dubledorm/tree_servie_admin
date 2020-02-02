@@ -146,6 +146,37 @@ RSpec.describe Api::NodesController, type: :request do
     end
   end
 
+  describe 'count#' do
+    let!(:instance) { FactoryGirl.create(:instance) }
+    let!(:tree) { FactoryGirl.create(:tree, instance: instance) }
+
+
+    context 'when no records exist' do
+      it 'should return empty array' do
+        get(count_api_instance_tree_nodes_path(instance_id: tree.instance, tree_id: tree.id))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq(0)
+      end
+    end
+
+    context 'when we have two instances' do
+      include_context 'some trees with nodes'
+      let!(:instance_new) { FactoryGirl.create(:instance) }
+
+      it 'if filter by tree' do
+        get(count_api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree2))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq(1)
+      end
+
+      it 'if filter by instance' do
+        get(count_api_instance_tree_nodes_path(instance_id: instance_new, tree_id: tree2))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq(0)
+      end
+    end
+  end
+
   describe 'create#' do
     let!(:instance) { FactoryGirl.create(:instance) }
     let!(:tree) { FactoryGirl.create(:tree, instance: instance) }

@@ -11,10 +11,13 @@ Rails.application.routes.draw do
             get :children
             get :path_to_root
             get :all_children
+            get :count_children
+            get :count_all_children
           end
 
           collection do
             get :root
+            get :count
           end
         end
       end

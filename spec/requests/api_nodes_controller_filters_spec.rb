@@ -50,6 +50,20 @@ RSpec.describe Api::NodesController, type: :request do
         end
       end
 
+      context 'when use count' do
+        it 'should return 0 records' do
+          get(count_api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, name: 'abrakadabra'))
+          expect(response).to have_http_status(200)
+          expect(JSON.parse(response.body)).to eq(0)
+        end
+
+        it 'should return records for tree1' do
+          get(count_api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, name: 'Имя'))
+          expect(response).to have_http_status(200)
+          expect(JSON.parse(response.body)).to eq(5)
+        end
+      end
+
       context 'when use children' do
 
         it 'should return 0 records' do
@@ -360,6 +374,18 @@ RSpec.describe Api::NodesController, type: :request do
       end
     end
 
+    context 'when use count_children' do
+      it 'should return children for root tree1' do
+        node12.node_type = 'тип1'
+        node12.node_subtype = 'подтип'
+        node12.save
+
+        get(count_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, node_type: 'тип1', node_subtype: 'подтип'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq(1)
+      end
+    end
+
     context 'when use all_children' do
       it 'should return children for root tree1' do
         node12.node_type = 'тип1'
@@ -376,6 +402,25 @@ RSpec.describe Api::NodesController, type: :request do
         get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, node_type: 'тип1', node_subtype: 'подтип'))
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body).count).to eq(1)
+      end
+    end
+
+    context 'when use count_all_children' do
+      it 'should return children for root tree1' do
+        node12.node_type = 'тип1'
+        node12.node_subtype = 'подтип'
+        node12.save
+
+        node1.node_type = 'тип1'
+        node1.save
+
+        node121.node_type = 'тип2'
+        node121.node_subtype = 'подтип'
+        node121.save
+
+        get(count_all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, node_type: 'тип1', node_subtype: 'подтип'))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq(1)
       end
     end
   end

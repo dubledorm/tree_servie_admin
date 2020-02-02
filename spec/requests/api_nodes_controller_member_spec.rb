@@ -116,4 +116,36 @@ RSpec.describe Api::NodesController, type: :request do
       expect(JSON.parse(response.body).count).to eq(0)
     end
   end
+
+  describe 'count_children' do
+    include_context 'many nodes with parents'
+
+    it 'should return 3 children' do
+      get(count_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to eq(3)
+    end
+
+    it 'should return 1 child' do
+      get(count_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node12.id))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to eq(1)
+    end
+  end
+
+  describe 'count_all_children' do
+    include_context 'many nodes with parents'
+
+    it 'should return empty list' do
+      get(count_all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node121))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to eq(0)
+    end
+
+    it 'should return 4 nodes' do
+      get(count_all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to eq(4)
+    end
+  end
 end
