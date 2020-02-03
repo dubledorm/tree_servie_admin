@@ -28,7 +28,7 @@ RSpec.describe Api::NodesController, type: :request do
         it 'should return records for tree1' do
           get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, name: 'Имя'))
           expect(response).to have_http_status(200)
-          expect(JSON.parse(response.body).count).to eq(5)
+          expect(JSON.parse(response.body).count).to eq(6)
         end
 
         it 'should return records for tree2' do
@@ -60,7 +60,7 @@ RSpec.describe Api::NodesController, type: :request do
         it 'should return records for tree1' do
           get(count_api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, name: 'Имя'))
           expect(response).to have_http_status(200)
-          expect(JSON.parse(response.body)).to eq(5)
+          expect(JSON.parse(response.body)).to eq(6)
         end
       end
 
@@ -98,7 +98,7 @@ RSpec.describe Api::NodesController, type: :request do
         it 'should return children for root tree1' do
           get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, name: 'Имя'))
           expect(response).to have_http_status(200)
-          expect(JSON.parse(response.body).count).to eq(4)
+          expect(JSON.parse(response.body).count).to eq(5)
         end
 
         it 'should return only one child' do
@@ -113,7 +113,7 @@ RSpec.describe Api::NodesController, type: :request do
         it 'should return children for node12' do
           get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node12.id, name: 'Имя'))
           expect(response).to have_http_status(200)
-          expect(JSON.parse(response.body).count).to eq(1)
+          expect(JSON.parse(response.body).count).to eq(2)
           expect(JSON.parse(response.body)[0]['id']).to eq(node121.id)
         end
       end
@@ -163,7 +163,7 @@ RSpec.describe Api::NodesController, type: :request do
       it 'should return records for tree1' do
         get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, like_name: 'это'))
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body).count).to eq(5)
+        expect(JSON.parse(response.body).count).to eq(6)
       end
 
       it 'should return records for tree2' do
@@ -206,7 +206,7 @@ RSpec.describe Api::NodesController, type: :request do
       it 'should return children for root tree1' do
         get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, like_name: 'Имя'))
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body).count).to eq(4)
+        expect(JSON.parse(response.body).count).to eq(5)
       end
 
       it 'should return only one child' do
@@ -221,7 +221,7 @@ RSpec.describe Api::NodesController, type: :request do
       it 'should return children for node12' do
         get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node12.id, like_name: 'Имя'))
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body).count).to eq(1)
+        expect(JSON.parse(response.body).count).to eq(2)
         expect(JSON.parse(response.body)[0]['id']).to eq(node121.id)
       end
     end
@@ -257,7 +257,7 @@ RSpec.describe Api::NodesController, type: :request do
       it 'should return records for tree1' do
         get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, state: 'active'))
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body).count).to eq(5)
+        expect(JSON.parse(response.body).count).to eq(6)
       end
 
       it 'should return records for tree2' do
@@ -309,7 +309,7 @@ RSpec.describe Api::NodesController, type: :request do
       it 'should return children for root tree1' do
         get(all_children_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1.id, state: 'active'))
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body).count).to eq(4)
+        expect(JSON.parse(response.body).count).to eq(5)
       end
 
       it 'should return only one child' do

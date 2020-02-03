@@ -212,7 +212,7 @@ RSpec.describe Api::TreesController, type: :request do
 
       it 'should decrease nodes records count' do
         expect{ delete(api_instance_tree_path( instance_id: tree1.instance_id,
-                                               id: tree1.id )) }.to change(Node, :count).by(-5)
+                                               id: tree1.id )) }.to change(Node, :count).by(-6)
       end
 
       it 'should decrease tag records count' do
