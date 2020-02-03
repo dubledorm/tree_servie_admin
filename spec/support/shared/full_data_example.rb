@@ -32,4 +32,10 @@ RSpec.shared_context 'full data example' do
   let!(:mc1_node12) { FactoryGirl.create(:user_node, user: user_mc_1, node: node12) }
   let!(:mc2_node11) { FactoryGirl.create(:user_node, user: user_mc_2, node: node11) }
   let!(:mc2_node121) { FactoryGirl.create(:user_node, user: user_mc_2, node: node121) }
+
+  let!(:user1) { FactoryGirl.create(:user, tree: tree1) }
+  let!(:user2) { FactoryGirl.create(:user, tree: tree2) }
+
+  let!(:user_node1) { FactoryGirl.create(:user_node, user: user1, node: node1) }
+  let!(:user_node2) { FactoryGirl.create(:user_node, user: user2, node: node2) }
 end
