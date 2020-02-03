@@ -39,12 +39,12 @@ RSpec.describe Api::UserNodesController, type: :request do
     it 'should decrease records count' do
       expect{ delete(api_instance_tree_user_node_path( instance_id: instance1.id,
                                                   tree_id: tree1.id,
-                                                  id: user_node1.id )) }.to change(UserNode, :count).by(-1)
+                                                  id: mc1_node11.id )) }.to change(UserNode, :count).by(-1)
     end
 
     it 'should return 400' do
       delete(api_instance_tree_user_node_path( instance_id: instance1.id, tree_id: tree1.id,
-                                               id: user_node1.id + 10))
+                                               id: mc1_node11.id + 10))
       expect(response).to have_http_status(404)
     end
   end
