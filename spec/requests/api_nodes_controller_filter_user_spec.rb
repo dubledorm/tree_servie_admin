@@ -106,7 +106,7 @@ RSpec.describe Api::NodesController, type: :request do
     end
   end
 
-  context 'when use path_to_root' do
+  describe 'path_to_root#' do
     it 'should return empty path' do
       get(path_to_root_api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node1, user_id: user_mc_3.id))
       expect(response).to have_http_status(200)
@@ -131,6 +131,49 @@ RSpec.describe Api::NodesController, type: :request do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body).count).to eq(1)
       expect(JSON.parse(response.body)[0]['id']).to eq(node12.id)
+    end
+  end
+
+  describe 'show#' do
+    it 'should return record' do
+      get(api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node11.id, user_id: user_admin.id))
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['id']).to eq(node11.id)
+    end
+
+    it_should_behave_like 'get response 404' do
+      subject { get(api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node11.id, user_id: user_mc_3.id)) }
+    end
+  end
+
+  describe 'update#' do
+    it 'should update record' do
+      put(api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node11.id, user_id: user_admin.id ),
+          params: { node: { name: 'New name of node'} } )
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)['name']).to eq('New name of node')
+      node11.reload
+      expect(node11.name).to eq('New name of node')
+    end
+
+    it_should_behave_like 'get response 404' do
+      subject { put(api_instance_tree_node_path(instance_id: instance1, tree_id: tree1, id: node11.id, user_id: user_mc_3.id)) }
+    end
+  end
+
+  describe 'delete#' do
+    it 'should decrease records count' do
+      expect{ delete(api_instance_tree_node_path( instance_id: instance1,
+                                                  tree_id: tree1,
+                                                  id: node11.id,
+                                                  user_id: user_admin.id  )) }.to change(Node, :count).by(-1)
+    end
+
+    it_should_behave_like 'get response 404' do
+      subject { delete(api_instance_tree_node_path( instance_id: instance1,
+                                                    tree_id: tree1,
+                                                    id: node11.id,
+                                                    user_id: user_mc_3.id  )) }
     end
   end
 end
