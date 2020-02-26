@@ -37,6 +37,13 @@ class Node < ApplicationRecord
   scope :by_name, ->(name){ where(name: name) }
   scope :like_name, ->(name){ where('nodes.name LIKE ?', "%#{name}%") }
   scope :by_state, ->(state){ where(state: state)}
+  scope :has_tag, ->(tag_name){ joins(:tags).where(tags: { name: tag_name }) }
+  scope :has_string_tag, ->(tag_name, tag_value){ joins(:tags).where(tags: { name: tag_name,
+                                                                             value_string: tag_value,
+                                                                             value_type: 'string' }) }
+  scope :has_int_tag, ->(tag_name, tag_value){ joins(:tags).where(tags: { name: tag_name,
+                                                                          value_int: tag_value,
+                                                                          value_type: 'int' }) }
 
 
   scope :roots, ->{ where(parent_id: nil) }

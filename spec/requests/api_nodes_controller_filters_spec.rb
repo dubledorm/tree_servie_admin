@@ -436,4 +436,29 @@ RSpec.describe Api::NodesController, type: :request do
       end
     end
   end
+
+  describe 'has_tag' do
+    include_context 'full data example'
+
+    context 'when use index' do
+      it 'should return records for tree1' do
+        get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, has_tag: tag11_1.name))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+      end
+    end
+  end
+
+  describe 'has_string_tag' do
+    include_context 'full data example'
+
+    context 'when use index' do
+      it 'should return records for tree1' do
+        get(api_instance_tree_nodes_path(instance_id: instance1, tree_id: tree1, has_string_tag: { tag_name: tag11_1.name,
+                                                                                                   tag_value: tag11_1.value_string }))
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body).count).to eq(1)
+      end
+    end
+  end
 end

@@ -21,7 +21,7 @@ RSpec.shared_context 'full data example' do
   let!(:tag121_1) { FactoryGirl.create(:tag, node: node121) }
   let!(:tag121_2) { FactoryGirl.create(:tag, node: node121) }
 
-  let!(:tag11_1) { FactoryGirl.create(:tag, node: node11) }
+  let!(:tag11_1) { FactoryGirl.create(:tag, node: node11, value_type: 'string', value_string: '1111') }
   let!(:tag11_2) { FactoryGirl.create(:tag, node: node11) }
 
   let!(:tag3_1) { FactoryGirl.create(:tag, node: node3) }

@@ -35,4 +35,16 @@ RSpec.describe Tag, type: :model do
       it { expect(tag4).to be_valid }
     end
   end
+
+  describe 'scopes' do
+    let!(:tag1) { FactoryGirl.create(:tag, name: 'name1', value_type: 'string', value_string: 'string1') }
+    let!(:tag2) { FactoryGirl.create(:tag, name: 'name1', value_type: 'string', value_string: 'string1') }
+    let!(:tag3) { FactoryGirl.create(:tag, name: 'name1', value_type: 'string', value_string: 'string2') }
+    let!(:tag4) { FactoryGirl.create(:tag, name: 'name1', value_type: 'int', value_string: 'string1', value_int: 4) }
+
+    it { expect(Tag.by_string_value('name1', 'string1').count).to eq(2) }
+    it { expect(Tag.by_string_value('name1', 'string2').count).to eq(1) }
+    it { expect(Tag.by_string_value('name2', 'string1').count).to eq(0) }
+    it { expect(Tag.by_int_value('name1', 4).count).to eq(1) }
+  end
 end

@@ -13,4 +13,6 @@ class Tag < ApplicationRecord
   scope :node_id, ->(node_id){ where(node_id: node_id) }
   scope :tree_id, ->(tree_id){ joins(:node).where(nodes: { tree_id: tree_id }) }
   scope :instance_id, ->(instance_id){ joins(:node).joins(:instance).where(nodes: { trees: { instance_id: instance_id } }) }
+  scope :by_string_value, ->(name, value){ where(name: name, value_string: value, value_type: 'string') }
+  scope :by_int_value, ->(name, value){ where(name: name, value_int: value, value_type: 'int') }
 end

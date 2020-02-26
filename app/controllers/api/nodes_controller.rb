@@ -10,6 +10,10 @@ class Api::NodesController < Api::BaseController
   has_scope :by_name, as: :name
   has_scope :like_name
   has_scope :by_state, as: :state
+  has_scope :has_tag
+  has_scope :has_string_tag, using: %i[tag_name tag_value], type: :hash
+  has_scope :has_int_tag, using: %i[tag_name tag_value], type: :hash
+
 
   def create
     super do

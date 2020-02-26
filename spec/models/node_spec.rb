@@ -97,4 +97,34 @@ RSpec.describe Node, type: :model do
       it { expect(Node.like_name('четырнадцатый').first).to eq(node14) }
     end
   end
+
+  describe 'scopes by tags' do
+    let!(:node11) { FactoryGirl.create :node, name: 'the node 11' }
+    let!(:node12) { FactoryGirl.create :node, name: 'the node 12' }
+    let!(:node13) { FactoryGirl.create :node, name: 'это тринадцатый нод' }
+    let!(:node14) { FactoryGirl.create :node, name: 'это четырнадцатый нод' }
+
+
+    let!(:tag1) { FactoryGirl.create(:tag, node: node11,
+                                     name: 'name1', value_type: 'string',
+                                     value_string: 'string1') }
+    let!(:tag2) { FactoryGirl.create(:tag, node: node12,
+                                     name: 'name1', value_type: 'string',
+                                     value_string: 'string1') }
+    let!(:tag3) { FactoryGirl.create(:tag, node: node13,
+                                     name: 'name1', value_type: 'string',
+                                     value_string: 'string2') }
+    let!(:tag4) { FactoryGirl.create(:tag, node: node14,
+                                     name: 'name1', value_type: 'int',
+                                     value_string: 'string1', value_int: 4) }
+
+    it { expect(Node.has_string_tag('name1', 'string1').count).to eq(2) }
+    it { expect(Node.has_string_tag('name1', 'string2').count).to eq(1) }
+    it { expect(Node.has_string_tag('name2', 'string1').count).to eq(0) }
+    it { expect(Node.has_string_tag('name1', 'string222222').count).to eq(0) }
+    it { expect(Node.has_int_tag('name1', 4).count).to eq(1) }
+
+    it { expect(Node.has_tag('name1').count).to eq(4) }
+
+  end
 end
