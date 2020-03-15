@@ -1,6 +1,6 @@
 docker build . -t tree_servie_admin
-docker tag tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.1.0
-docker push registry.infsphr.info/tree_servie_admin:v1.1.0
+docker tag tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.2.0
+docker push registry.infsphr.info/tree_servie_admin:v1.2.0
 
 sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle:jungle@172.16.50.102:5433/jungle' --env RAILS_ENV=production --name tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.1 &
 
@@ -9,3 +9,6 @@ sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle:j
 --env DATABASE_URL='postgres://azirumga@10.50.0.84/mcs_control_development'
 
 sudo docker run --rm --publish 3000:3000 --env DATABASE_URL='postgres://jungle-postgres:5433/tree_servie_admin_production' --env RAILS_ENV=production --name tree_servie_admin registry.infsphr.info/tree_servie_admin:v1.0.0
+
+
+SELECT nodes.* FROM nodes INNER JOIN trees ON trees.id = nodes.tree_id INNER JOIN tags ON tags.node_id = nodes.id WHERE trees.instance_id = 2 AND nodes.tree_id = 4 AND tags.name = 'tg12' AND tags.value_string='sdfsf' AND tags.value_type = 'string';
